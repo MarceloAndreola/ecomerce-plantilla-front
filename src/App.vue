@@ -12,6 +12,20 @@
   </div>
 </template>
 
+<script>
+  export default {
+    mounted() {
+      // Despierta el backend en Render
+      fetch("https://ecomerce-plantilla-back.onrender.com/productos/test")
+        .then(() => console.log("Backend despertado"))
+        .catch(err => console.error("Error despertando backend:", err));
+    }
+  }
+
+  
+</script>
+
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
