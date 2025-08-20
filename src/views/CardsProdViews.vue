@@ -21,6 +21,13 @@
     placeholder="precio del producto"
     />
 
+    <br><br>
+
+    <input 
+    type="number"
+    v-model="stock"
+    placeholder="stock"
+    />
 
     <br><br>
 
@@ -50,6 +57,7 @@ export default {
       name_prod: '',
       descripcion: '',
       precio: '',
+      stock: 0,
       file: null,
       categorias: [],
       categoria_id: ''
@@ -64,7 +72,7 @@ export default {
       this.file = event.target.files[0];
     },
     async createProd() {
-      if (!this.name_prod || !this.descripcion || !this.precio || !this.file || !this.categoria_id) {
+      if (!this.name_prod || !this.descripcion || !this.precio || !this.stock || !this.file || !this.categoria_id) {
         alert('Complete el formulario');
         return;
       }
@@ -73,6 +81,7 @@ export default {
       formData.append('name_prod', this.name_prod);
       formData.append('descripcion', this.descripcion);
       formData.append('precio', this.precio);
+      formData.append('stock', this.stock);
       formData.append('categoria_id', this.categoria_id);
       formData.append('image', this.file);
 
@@ -92,6 +101,7 @@ export default {
         this.name_prod = '';
         this.descripcion = '';
         this.precio = '';
+        this.stock = 0;
         this.categoria_id = ''
         this.file = null;
         this.$refs.fileInput.value = '';

@@ -59,29 +59,53 @@
           color: white;
         "
       >
+      <img 
+        :src="`http://127.0.0.1:5000/uploads/${producto.image_path}`" 
+        alt="Imagen producto" 
+        style="max-width: 200px; border-radius: 8px;" 
+      />
         <p><strong>Nombre:</strong> {{ producto.name_prod }}</p>
         <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
         <p v-if="producto.precio"><strong>Precio:</strong> ${{ producto.precio }}</p>
-        <img 
-          :src="`http://127.0.0.1:5000/uploads/${producto.image_path}`" 
-          alt="Imagen producto" 
-          style="max-width: 200px; border-radius: 8px;" 
-        />
+        <p><strong>Stock:</strong> {{ producto.stock }}</p>
+        <button 
+          @click="comprarProducto(producto)" 
+          style="
+            background-color: #10b981; 
+            color: white; 
+            border: none; 
+            padding: 10px 15px; 
+            border-radius: 8px; 
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+          "
+          @mouseover="hoverBoton = producto.id"
+          @mouseleave="hoverBoton = null"
+          :style="{
+            transform: hoverBoton === producto.id ? 'scale(1.05)' : 'scale(1)',
+            boxShadow: hoverBoton === producto.id ? '0 4px 10px rgba(0,0,0,0.3)' : 'none'
+          }"
+        >
+          Comprar
+        </button>      
       </div>
     </div>
     <div v-else>
-      <p>No hay productos para mostrar.</p>
+      <p>Seleccione una categoria para ver los productos.</p>
     </div>
   </div>
 </template>
 
 <script>
+import { carrito } from '@/cart.js'
+
 export default {
   data() {
     return {
       productos: [],
       categorias: [],
       hover: null, // para animación hover
+      hoverBoton: null
     }
   },
   async created() {
@@ -105,6 +129,10 @@ export default {
       } catch (err) {
         console.error("Error al cargar productos:", err)
       }
+    },
+    comprarProducto(producto) {
+      carrito.agregar(producto)
+      alert(`${producto.name_prod} agregado al carrito`)  
     }
   }
 }

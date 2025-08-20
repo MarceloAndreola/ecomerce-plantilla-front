@@ -5,6 +5,8 @@ import AdminIngresoViews from '@/views/AdminIngresoViews.vue'
 import UserViews from '@/views/UserViews.vue'
 import CardsProdViews from '@/views/CardsProdViews.vue'
 import HomeViews from '@/views/HomeViews.vue'
+import ModViews from '@/views/ModViews.vue'
+import DeleteViews from '@/views/DeleteViews.vue'
 
 const routes = [
   {
@@ -26,7 +28,9 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       { path: 'users', name: 'Users', component: UserViews },
-      { path: 'productos', name: 'Productos', component: CardsProdViews }
+      { path: 'productos', name: 'Productos', component: CardsProdViews },
+      { path: 'modificaciones', name: 'Modificaciones', component: ModViews },
+      { path: 'eliminar', name: 'Eliminar', component: DeleteViews }
     ]
   }
 ]

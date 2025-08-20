@@ -20,6 +20,13 @@
         Ingresar
       </button>
     </form>
+
+    <br>
+    <br>
+    <div>
+      <p>Usuario: admin</p>
+      <p>Contraseña: 1234</p>
+    </div>
   </div>
 </template>
 
@@ -45,3 +52,6 @@ export default {
   }
 };
 </script>
+
+
+
