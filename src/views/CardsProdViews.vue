@@ -64,7 +64,7 @@ export default {
     }
   },
   async created() {
-    const res = await fetch('http://127.0.0.1:5000/productos/lista_categorias')
+    const res = await fetch('https://ecomerce-plantilla-back.onrender.com/productos/lista_categorias')
     this.categorias = await res.json()
   },
   methods: {
@@ -87,7 +87,7 @@ export default {
 
 
       try {
-        const response = await fetch('http://127.0.0.1:5000/productos/create_prod', {
+        const response = await fetch('https://ecomerce-plantilla-back.onrender.com/productos/create_prod', {
           method: 'POST',
           body: formData
         });

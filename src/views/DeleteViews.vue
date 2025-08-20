@@ -44,7 +44,7 @@ export default {
   methods: {
     async buscarProducto() {
       try {
-        const res = await fetch(`http://127.0.0.1:5000/productos/buscar_prod/${this.buscarNombre}`);
+        const res = await fetch(`https://ecomerce-plantilla-back.onrender.com/productos/buscar_prod/${this.buscarNombre}`);
         if (!res.ok) throw new Error('No se encontraron productos');
         this.resultados = await res.json();
       } catch (err) {
@@ -67,7 +67,7 @@ export default {
         if (!confirmado) return; // Si el usuario cancela, salir del método
 
       try {
-        const res = await fetch(`http://127.0.0.1:5000/productos/delete_productos/${this.productoId}`, {
+        const res = await fetch(`https://ecomerce-plantilla-back.onrender.com/productos/delete_productos/${this.productoId}`, {
           method: 'DELETE'
         });
 

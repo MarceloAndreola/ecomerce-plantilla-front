@@ -93,7 +93,7 @@ export default {
     }
   },
   async created() {
-    const res = await fetch('http://127.0.0.1:5000/productos/lista_categorias')
+    const res = await fetch('https://ecomerce-plantilla-back.onrender.com/productos/lista_categorias')
     this.categorias = await res.json()
   },
   methods: {
@@ -103,7 +103,7 @@ export default {
 
     async buscarProducto() {
       try {
-        const res = await fetch(`http://127.0.0.1:5000/productos/buscar_prod/${this.buscarNombre}`);
+        const res = await fetch(`https://ecomerce-plantilla-back.onrender.com/productos/buscar_prod/${this.buscarNombre}`);
         if (!res.ok) throw new Error('No se encontraron productos');
         this.resultados = await res.json();
       } catch (err) {
@@ -138,7 +138,7 @@ export default {
     }
 
     try {
-        const response = await fetch(`http://127.0.0.1:5000/productos/modificar_prod/${this.productoId}`, {
+        const response = await fetch(`https://ecomerce-plantilla-back.onrender.com/productos/modificar_prod/${this.productoId}`, {
         method: 'PUT',
         body: formData
         });

@@ -60,7 +60,7 @@
         "
       >
       <img 
-        :src="`http://127.0.0.1:5000/uploads/${producto.image_path}`" 
+        :src="`https://ecomerce-plantilla-back.onrender.com/uploads/${producto.image_path}`" 
         alt="Imagen producto" 
         style="max-width: 200px; border-radius: 8px;" 
       />
@@ -114,7 +114,7 @@ export default {
   methods: {
     async fetchCategorias() {
       try {
-        const res = await fetch("http://127.0.0.1:5000/productos/lista_categorias")
+        const res = await fetch("https://ecomerce-plantilla-back.onrender.com/productos/lista_categorias")
         if (!res.ok) throw new Error(`Error: ${res.status}`)
         this.categorias = await res.json()
       } catch (err) {
@@ -123,7 +123,7 @@ export default {
     },
     async fetchProductosPorCategoria(idCategoria) {
       try {
-        const res = await fetch(`http://127.0.0.1:5000/productos/lista_prod_por_cat/${idCategoria}`)
+        const res = await fetch(`https://ecomerce-plantilla-back.onrender.com/productos/lista_prod_por_cat/${idCategoria}`)
         if (!res.ok) throw new Error(`Error: ${res.status}`)
         this.productos = await res.json()
       } catch (err) {
