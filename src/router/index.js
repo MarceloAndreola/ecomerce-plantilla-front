@@ -7,6 +7,13 @@ import CardsProdViews from '@/views/CardsProdViews.vue'
 import HomeViews from '@/views/HomeViews.vue'
 import ModViews from '@/views/ModViews.vue'
 import DeleteViews from '@/views/DeleteViews.vue'
+import CheckoutViews from '@/views/CheckoutViews.vue'
+import CheckoutLayout from '@/layouts/CheckoutLayout.vue';
+import CheckPayViews from '@/views/CheckPayViews.vue';
+import BankDetailsViews from '@/views/BankDetailsViews.vue'
+import ConfirmPayViews from '@/views/ConfirmPayViews.vue'
+import HistorialPayViews from '@/views/HistorialPayViews.vue'
+
 
 const routes = [
   {
@@ -30,7 +37,18 @@ const routes = [
       { path: 'users', name: 'Users', component: UserViews },
       { path: 'productos', name: 'Productos', component: CardsProdViews },
       { path: 'modificaciones', name: 'Modificaciones', component: ModViews },
-      { path: 'eliminar', name: 'Eliminar', component: DeleteViews }
+      { path: 'eliminar', name: 'Eliminar', component: DeleteViews },
+      { path: 'bankdetails', name: 'BankDetails', component: BankDetailsViews },
+      { path: 'confirmPay', name: 'ConfirmPay', component: ConfirmPayViews },
+      { path: 'historialPay', name: 'HistorialPay', component: HistorialPayViews }
+    ]
+  },
+  {
+    path: '/checkout',
+    component: CheckoutLayout,
+    children: [
+      { path: '', name: 'Checkout', component: CheckoutViews },
+      { path: 'pay', name: 'CheckPay', component: CheckPayViews  }
     ]
   }
 ]

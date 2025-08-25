@@ -94,7 +94,6 @@ export default {
 
         if (!response.ok) throw new Error(`Error: ${response.status}`);
 
-        // Opcional: mostrar un mensaje de éxito
         alert('Producto subido correctamente');
 
         // Resetear valores
