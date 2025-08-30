@@ -26,19 +26,22 @@ export default {
                 return;
             }
             this.loading = true;
-            const formData = new FormData();
-            formData.append('name_cat', this.name_cat);
             try {
                 const response = await fetch('https://ecomerce-plantilla-back-1.onrender.com/productos/create_categoria', {
                     method: 'POST',
-                    body: formData
+                    headers: { 'Content-Type' : 'application/json' },
+                    body: JSON.stringify({ name_cat: this.name_cat })
                 });
+
+                const data = await response.json();
+                console.log(data);
     
                 if (!response.ok) throw new Error(`Error: ${response.status}`);
                 alert('Categoria subida correctamente');
                 this.name_cat = '';
             } catch (error) {
                 console.error('Error al subir la categoria: ', error);
+                alert(error.message || 'Ocurrió un error al subir la categoría');
             } finally {
                 this.loading = false;
             }
