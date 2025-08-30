@@ -46,7 +46,7 @@ export default {
         formData.append("total", total.value)
         formData.append("nombre", "Nombre del cliente")
 
-        const res = await fetch("http://localhost:5000/pagos/subir", {
+        const res = await fetch("https://ecomerce-plantilla-back-1.onrender.com/pagos/subir", {
           method: "POST",
           body: formData
         })
@@ -63,7 +63,7 @@ export default {
 
     onMounted(async () => {
       try {
-        const res = await fetch("http://localhost:5000/details/bank_details")
+        const res = await fetch("https://ecomerce-plantilla-back-1.onrender.com/details/bank_details")
         const data = await res.json()
         if (data.length > 0) bankData.value = data[0]
       } catch (err) {

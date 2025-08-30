@@ -37,7 +37,7 @@ export default {
 
     const cargarPagos = async () => {
       try {
-        const res = await fetch("http://localhost:5000/pagos/listar")
+        const res = await fetch("https://ecomerce-plantilla-back-1.onrender.com/pagos/listar")
         pagos.value = await res.json()
         for (const pago of pagos.value) {
           await cargarHistorial(pago.id)
@@ -49,7 +49,7 @@ export default {
 
     const cargarHistorial = async (pagoId) => {
       try {
-        const res = await fetch(`http://localhost:5000/pagos/historial/${pagoId}`)
+        const res = await fetch(`https://ecomerce-plantilla-back-1.onrender.com/pagos/historial/${pagoId}`)
         historial.value[pagoId] = await res.json()
       } catch (err) {
         console.error(`Error al cargar historial del pago ${pagoId}:`, err)

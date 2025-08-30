@@ -30,7 +30,7 @@ export default {
 
     const cargarPagos = async () => {
       try {
-        const res = await fetch("http://localhost:5000/pagos/listar")
+        const res = await fetch("https://ecomerce-plantilla-back-1.onrender.com/pagos/listar")
         pagos.value = await res.json()
       } catch (err) {
         console.error("Error al cargar pagos:", err)
@@ -39,7 +39,7 @@ export default {
 
     const aprobarPago = async (id) => {
       try {
-        const res = await fetch(`http://localhost:5000/pagos/aprobar/${id}`, { method: 'PUT' })
+        const res = await fetch(`https://ecomerce-plantilla-back-1.onrender.com/pagos/aprobar/${id}`, { method: 'PUT' })
         if (!res.ok) throw new Error('Error al aprobar')
         alert('Pago aprobado y registrado en historial')
         cargarPagos()
@@ -51,7 +51,7 @@ export default {
 
     const rechazarPago = async (id) => {
       try {
-        const res = await fetch(`http://localhost:5000/pagos/rechazar/${id}`, { method: 'PUT' })
+        const res = await fetch(`https://ecomerce-plantilla-back-1.onrender.com/pagos/rechazar/${id}`, { method: 'PUT' })
         if (!res.ok) throw new Error('Error al rechazar')
         alert('Pago rechazado y registrado en historial')
         cargarPagos()

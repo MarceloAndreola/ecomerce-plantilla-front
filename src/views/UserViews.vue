@@ -33,7 +33,7 @@
       >
         <p>Nombre: {{ user.name }}</p>
         <img 
-          :src="`https://ecomerce-plantilla-back.onrender.com/uploads/${user.image_path}`" 
+          :src="`https://ecomerce-plantilla-back-1.onrender.com/uploads/${user.image_path}`" 
           alt="Imagen usuario" 
           style="max-width: 200px;" 
         />
@@ -57,7 +57,7 @@ export default {
     },
     async fetchUsers() {
       try {
-        const response = await fetch('https://ecomerce-plantilla-back.onrender.com/user/lista_usuarios');
+        const response = await fetch('https://ecomerce-plantilla-back-1.onrender.com/user/lista_usuarios');
         if (!response.ok) throw new Error(`Error: ${response.status}`);
         const data = await response.json();
         this.users = data; // Asignar todos los usuarios recibidos
@@ -76,7 +76,7 @@ export default {
       formData.append('image', this.file);
 
       try {
-        const response = await fetch('https://ecomerce-plantilla-back.onrender.com/user/create-users', {
+        const response = await fetch('https://ecomerce-plantilla-back-1.onrender.com/user/create-users', {
           method: 'POST',
           body: formData
         });

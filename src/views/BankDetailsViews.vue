@@ -49,7 +49,7 @@ export default {
   methods: {
     async fetchBankDetails() {
       try {
-        const res = await fetch('http://localhost:5000/details/bank_details')
+        const res = await fetch('https://ecomerce-plantilla-back-1.onrender.com/details/bank_details')
         const data = await res.json()
         if (data.length > 0) {
           this.bankData = data[0]           // Suponiendo solo 1 registro
@@ -61,7 +61,7 @@ export default {
     },
     async updateBankDetails() {
       try {
-        const res = await fetch(`http://localhost:5000/details/bank_details/${this.bankData.id}`, {
+        const res = await fetch(`https://ecomerce-plantilla-back-1.onrender.com/details/bank_details/${this.bankData.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(this.form)

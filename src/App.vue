@@ -16,7 +16,7 @@
   export default {
     mounted() {
       // Despierta el backend en Render
-      fetch("https://ecomerce-plantilla-back.onrender.com/productos/test")
+      fetch("https://ecomerce-plantilla-back-1.onrender.com/productos/test")
         .then(() => console.log("Backend despertado"))
         .catch(err => console.error("Error despertando backend:", err));
     }
