@@ -14,6 +14,7 @@ import BankDetailsViews from '@/views/BankDetailsViews.vue'
 import ConfirmPayViews from '@/views/ConfirmPayViews.vue'
 import HistorialPayViews from '@/views/HistorialPayViews.vue'
 import SeguimientoViews from '@/views/SeguimientoViews.vue'
+import CategoriasViews from '@/views/CategoriasViews.vue'
 
 
 const routes = [
@@ -42,7 +43,8 @@ const routes = [
       { path: 'bankdetails', name: 'BankDetails', component: BankDetailsViews },
       { path: 'confirmPay', name: 'ConfirmPay', component: ConfirmPayViews },
       { path: 'historialPay', name: 'HistorialPay', component: HistorialPayViews },
-      { path: 'seguimiento', name: 'Seguimiento', component: SeguimientoViews }
+      { path: 'seguimiento', name: 'Seguimiento', component: SeguimientoViews },
+      { path: 'categorias', name: 'Categorias', component: CategoriasViews }
     ]
   },
   {
