@@ -144,11 +144,11 @@ export default {
         async eliminarCategoria(cat) {
             if (!cat) return;  // seguridad
 
-            const confirmado = confirm(`¿Estas seguro que quieres eliminar la categoria "${cat.name_cat}"?`);
+            const confirmado = confirm(`¿Estas seguro que quieres eliminar "${cat.name_cat}"?`);
             if (!confirmado) return;
 
             try {
-                const res = await fetch(`https://ecomerce-plantilla-back-1.onrender.com/productos/delete_cat/${cat.id}`, {
+                const res = await fetch(`https://ecomerce-plantilla-back-1.onrender.com/productos/delete_cat/${cat.categoriaId}`, {
                     method: 'DELETE'
                 });
 
@@ -158,7 +158,7 @@ export default {
                 alert(data.message);
 
                 // Actualizar resultados
-                this.resultados = this.resultados.filter(c => c.id !== cat.id);
+                this.resultados = this.resultados.filter(c => c.id !== cat.categoriaId);
 
                 // Si estaba seleccionada para modificar, limpiar
                 if (this.categoriaId === cat.id) {
