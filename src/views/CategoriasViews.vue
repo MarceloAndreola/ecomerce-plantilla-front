@@ -144,7 +144,7 @@ export default {
         async eliminarCategoria(cat) {
             if (!cat) return;  // seguridad
 
-            const confirmado = confirm(`¿Estas seguro que quieres eliminar "${cat.name_cat}"?`);
+            const confirmado = confirm(`¿Estas seguro que quieres eliminar la categoria "${cat.name_cat}"?`);
             if (!confirmado) return;
 
             try {
