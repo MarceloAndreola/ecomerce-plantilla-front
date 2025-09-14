@@ -142,27 +142,34 @@ export default {
 
         
         async eliminarCategoria(cat) {
+            if (!cat) return;  // seguridad
 
-            const confirmado = confirm(`¿Estas seguro que quieres eliminar "${this.name_cat}"?`);
-                if(!confirmado) return;
-            
-                try {
-                    const res = await fetch(`https://ecomerce-plantilla-back-1.onrender.com/productos/delete_cat/${this.categoriaId}`, {
-                        method: 'DELETE'
-                    });
+            const confirmado = confirm(`¿Estas seguro que quieres eliminar "${cat.name_cat}"?`);
+            if (!confirmado) return;
 
-                    if (!res.ok) throw new Error(`Error: ${res.status}`);
+            try {
+                const res = await fetch(`https://ecomerce-plantilla-back-1.onrender.com/productos/delete_cat/${cat.id}`, {
+                    method: 'DELETE'
+                });
 
-                    const data = await res.json();
-                    alert(data.message);
+                if (!res.ok) throw new Error(`Error: ${res.status}`);
 
-                    this.resultados = this.resultados.filter(cat => cat.id !== this.categoriaId);
+                const data = await res.json();
+                alert(data.message);
+
+                // Actualizar resultados
+                this.resultados = this.resultados.filter(c => c.id !== cat.id);
+
+                // Si estaba seleccionada para modificar, limpiar
+                if (this.categoriaId === cat.id) {
                     this.categoriaId = null;
                     this.name_cat = '';
-                } catch (err) {
-                    console.error('Error al eliminar producto: ', err)
+                    this.name_categoria = '';
                 }
 
+            } catch (err) {
+                console.error('Error al eliminar categoria: ', err);
+            }
         }
     }
 
