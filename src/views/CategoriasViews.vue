@@ -142,34 +142,34 @@ export default {
 
         
         async eliminarCategoria(cat) {
-            if (!cat) return;  // seguridad
+                if (!cat) return;
 
-            const confirmado = confirm(`¿Estas seguro que quieres eliminar "${cat.name_cat}"?`);
-            if (!confirmado) return;
+                const confirmado = confirm(`¿Estás seguro que quieres eliminar la categoría "${cat.name_cat}"?`);
+                if (!confirmado) return;
 
-            try {
-                const res = await fetch(`https://ecomerce-plantilla-back-1.onrender.com/productos/delete_cat/${cat.categoriaId}`, {
-                    method: 'DELETE'
-                });
+                try {
+                    const res = await fetch(`https://ecomerce-plantilla-back-1.onrender.com/productos/delete_cat/${cat.id}`, {
+                        method: 'DELETE'
+                    });
 
-                if (!res.ok) throw new Error(`Error: ${res.status}`);
+                    if (!res.ok) throw new Error(`Error: ${res.status}`);
 
-                const data = await res.json();
-                alert(data.message);
+                    const data = await res.json();
+                    alert(data.message);
 
-                // Actualizar resultados
-                this.resultados = this.resultados.filter(c => c.id !== cat.categoriaId);
+                    // Actualizar resultados
+                    this.resultados = this.resultados.filter(c => c.id !== cat.id);
 
-                // Si estaba seleccionada para modificar, limpiar
-                if (this.categoriaId === cat.id) {
-                    this.categoriaId = null;
-                    this.name_cat = '';
-                    this.name_categoria = '';
+                    // Si estaba seleccionada para modificar, limpiar
+                    if (this.categoriaId === cat.id) {
+                        this.categoriaId = null;
+                        this.name_cat = '';
+                        this.name_categoria = '';
+                    }
+
+                } catch (err) {
+                    console.error('Error al eliminar categoría: ', err);
                 }
-
-            } catch (err) {
-                console.error('Error al eliminar categoria: ', err);
-            }
         }
     }
 
