@@ -26,9 +26,10 @@
         <button @click="buscarCategoria">Buscar</button>
 
         <ul v-if="resultados.length > 0">
-            <li v-for="cat in resultados" :key="cat.id">
+            <li v-for="cat in resultados" :key="cat.id" style="list-style-type: none;">
                 nombre = {{ cat.name_cat }}
-                <button @click="seleccionarCategoria(cat)">Seleccionar</button>
+                <button @click="seleccionarCategoria(cat)">Modificar</button>
+                <button @click="eliminarCategoria(cat)" style="color: red;">Eliminar</button>
             </li>
         </ul>
     </div>
@@ -43,6 +44,8 @@
         <br><br>
         <button @click="modificarCat">Subir modificación</button>
     </div>
+
+
 </template>
 <script>
 export default {
@@ -134,6 +137,35 @@ export default {
             } catch (error) {
                 console.error('Error al modificar la categoria', error);
             }
+
+        },
+
+        
+        async eliminarCategoria(cat) {
+            if (!this.categoriaId) {
+                alert('Primero seleccione la categoria');
+                return;
+            }
+
+            const confirmado = confirm(`¿Estas seguro que quieres eliminar "${this.name_cat}"?`);
+                if(!confirmado) return;
+            
+                try {
+                    const res = await fetch(`https://ecomerce-plantilla-back-1.onrender.com/productos/delete_cat/${this.categoriaId}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (!res.ok) throw new Error(`Error: ${res.status}`);
+
+                    const data = await res.json();
+                    alert(data.message);
+
+                    this.resultados = this.resultados.filter(cat => cat.id !== this.categoriaId);
+                    this.categoriaId = null;
+                    this.name_cat = '';
+                } catch (err) {
+                    console.error('Error al eliminar producto: ', err)
+                }
 
         }
     }
