@@ -142,10 +142,6 @@ export default {
 
         
         async eliminarCategoria(cat) {
-            if (!this.categoriaId) {
-                alert('Primero seleccione la categoria');
-                return;
-            }
 
             const confirmado = confirm(`¿Estas seguro que quieres eliminar "${this.name_cat}"?`);
                 if(!confirmado) return;
