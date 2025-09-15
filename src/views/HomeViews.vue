@@ -60,7 +60,7 @@
         "
       >
       <img 
-        :src="`https://ecomerce-plantilla-back-1.onrender.com/uploads/${producto.image_path}`" 
+        :src="producto.image_path" 
         alt="Imagen producto" 
         style="max-width: 200px; border-radius: 8px;" 
       />
