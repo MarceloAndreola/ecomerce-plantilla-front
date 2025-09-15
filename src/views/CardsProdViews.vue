@@ -2,6 +2,7 @@
   <div class="cards_prod">
     <h1>Carga de productos</h1>
 
+    <!-- Formulario de carga -->
     <input 
       type="text"
       v-model="name_prod"
@@ -15,20 +16,19 @@
       placeholder="Descripción del producto"
     />
     <br><br>
-    <input 
-    type="text"
-    v-model="precio"
-    placeholder="precio del producto"
-    />
 
+    <input 
+      type="text"
+      v-model="precio"
+      placeholder="precio del producto"
+    />
     <br><br>
 
     <input 
-    type="number"
-    v-model="stock"
-    placeholder="stock"
+      type="number"
+      v-model="stock"
+      placeholder="stock"
     />
-
     <br><br>
 
     <select v-model="categoria_id">
@@ -37,8 +37,8 @@
         {{ cat.name_cat }}
       </option>
     </select>
-    <br>
-    <br>
+    <br><br>
+
     <input
       type="file"
       @change="handleFile"
@@ -47,6 +47,29 @@
     <br><br>
 
     <button @click="createProd">Subir producto</button>
+
+    <hr>
+
+    <!-- Listado de productos por categoria -->
+    <h2>Productos por categoría</h2>
+    <select v-model="selectedCategory" @change="fetchProductsByCategory">
+      <option disabled value="">Seleccione categoria</option>
+      <option v-for="cat in categorias" :key="cat.id" :value="cat.id">
+        {{ cat.name_cat }}
+      </option>
+    </select>
+
+    <div v-if="productos.length === 0">No hay productos para esta categoría.</div>
+
+    <div v-for="prod in productos" :key="prod.id" class="producto-card">
+      <h3>{{ prod.name_prod }}</h3>
+      <p>{{ prod.descripcion }}</p>
+      <p>Precio: {{ prod.precio }}</p>
+      <p>Stock: {{ prod.stock }}</p>
+
+      <!-- ⚡ Modificado: uso directo de image_path que es la URL de Cloudinary -->
+      <img :src="prod.image_path" alt="Imagen del producto" width="150" />
+    </div>
   </div>
 </template>
 
@@ -60,10 +83,13 @@ export default {
       stock: 0,
       file: null,
       categorias: [],
-      categoria_id: ''
+      categoria_id: '',
+      productos: [],             // 🔹 Lista de productos por categoria
+      selectedCategory: ''       // 🔹 Categoria seleccionada para mostrar productos
     }
   },
   async created() {
+    // 🔹 Traigo categorías para formulario y listado
     const res = await fetch('https://ecomerce-plantilla-back-1.onrender.com/productos/lista_categorias')
     this.categorias = await res.json()
   },
@@ -85,7 +111,6 @@ export default {
       formData.append('categoria_id', this.categoria_id);
       formData.append('image', this.file);
 
-
       try {
         const response = await fetch('https://ecomerce-plantilla-back-1.onrender.com/productos/create_prod', {
           method: 'POST',
@@ -96,7 +121,7 @@ export default {
 
         alert('Producto subido correctamente');
 
-        // Resetear valores
+        // 🔹 Resetear valores
         this.name_prod = '';
         this.descripcion = '';
         this.precio = '';
@@ -105,9 +130,24 @@ export default {
         this.file = null;
         this.$refs.fileInput.value = '';
 
+        // 🔹 Actualizo listado si está viendo productos de la misma categoria
+        if(this.selectedCategory === this.categoria_id) {
+          this.fetchProductsByCategory()
+        }
+
       } catch (error) {
         console.error('Error al subir el producto:', error);
       }
+    },
+
+    // 🔹 Trae productos por categoria usando el endpoint que devuelve URLs de Cloudinary
+    async fetchProductsByCategory() {
+      if (!this.selectedCategory) {
+        this.productos = [];
+        return;
+      }
+      const res = await fetch(`https://ecomerce-plantilla-back-1.onrender.com/productos/lista_prod_por_cat/${this.selectedCategory}`)
+      this.productos = await res.json()
     }
   }
 }
