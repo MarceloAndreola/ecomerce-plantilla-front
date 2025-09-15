@@ -99,7 +99,7 @@ export default {
     },
     async createProd() {
       if (!this.name_prod || !this.descripcion || !this.precio || !this.stock || !this.file || !this.categoria_id) {
-        alert('Complete el formulario');
+        alert('Complete el formulario de prueba');
         return;
       }
 
@@ -119,7 +119,7 @@ export default {
 
         if (!response.ok) throw new Error(`Error: ${response.status}`);
 
-        alert('Producto subido correctamente');
+        alert('Producto subido correctamente de prueba');
 
         // Resetear valores del formulario
         this.name_prod = '';
