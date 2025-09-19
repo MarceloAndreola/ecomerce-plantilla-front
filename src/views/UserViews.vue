@@ -15,7 +15,7 @@
       placeholder="Contraseña"
       class="border rounded w-full px-3 py-2 mb-4"
     >
-    <br>
+    <br><br>
     <button @click="createUser" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mb-6">
       Crear Usuario
     </button>
