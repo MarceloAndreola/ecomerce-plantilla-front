@@ -1,6 +1,6 @@
 <template>
   <div class="home p-6 max-w-md mx-auto mt-10">
-    <h1 class="text-2xl font-bold mb-6 text-center">Crear usuario</h1>
+    <h1 class="text-2xl font-bold mb-6 text-center">Crear usuario de prueba</h1>
 
     <input 
       type="text"
@@ -60,18 +60,18 @@ export default {
         return;
       }
 
-      const formData = new FormData();
-      formData.append('name', this.name);
-      formData.append('password', this.password);
-
       try {
         const token = localStorage.getItem("access_token");
         const response = await fetch('https://ecomerce-plantilla-back-1.onrender.com/user/create-users', {
           method: 'POST',
           headers: {
-            "Authorization": `Bearer ${token}`  // ✅ token JWT
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json" // ✅ importante
           },
-          body: formData
+          body: JSON.stringify({
+            name: this.name,
+            password: this.password
+          })
         });
 
         if (!response.ok) throw new Error(`Error: ${response.status}`);
