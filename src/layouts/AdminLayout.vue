@@ -8,7 +8,7 @@
         <br>
         <input v-model="username" type="text" class="border rounded w-full px-3 py-2" required />
       </div>
-      <br><br>
+      <br>
       <div>
         <label class="block mb-1">Contraseña</label>
         <br>
