@@ -20,13 +20,6 @@
         Ingresar
       </button>
     </form>
-
-    <br>
-    <br>
-    <div>
-      <p>Usuario: admin</p>
-      <p>Contraseña: 1234</p>
-    </div>
   </div>
 </template>
 
@@ -40,13 +33,24 @@ export default {
     };
   },
   methods: {
-    login() {
-      // Usuario y contraseña hardcodeados
-      if (this.username === "admin" && this.password === "1234") {
-        localStorage.setItem("adminAuth", "true");
-        this.$router.push("/admin/productos/users"); // redirige a Users
-      } else {
-        alert("Usuario o contraseña incorrectos");
+    async login() {
+      try {
+        const response = await fetch("https://ecomerce-plantilla-back-1.onrender.com/admin_auth/login", {
+          method: 'POST', 
+          headers: {"Content-Type" : "application/json"},
+          body: JSON.stringify({
+            name_admin: this.username,
+            password :  this.password
+          })
+        });
+
+        if (!response.ok) throw new Error("Credenciales invalidas");
+
+        const data = await response.json();
+        localStorage.setItem("access_token", data.access_token);
+        this.$router.push("/admin/productos/users");
+      } catch (error) {
+        alert(error.message);
       }
     }
   }
