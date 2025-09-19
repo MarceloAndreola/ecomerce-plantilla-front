@@ -5,14 +5,16 @@
     <form @submit.prevent="login" class="space-y-4">
       <div>
         <label class="block mb-1">Usuario</label>
+        <br>
         <input v-model="username" type="text" class="border rounded w-full px-3 py-2" required />
       </div>
-
+      <br><br>
       <div>
         <label class="block mb-1">Contraseña</label>
+        <br>
         <input v-model="password" type="password" class="border rounded w-full px-3 py-2" required />
       </div>
-
+      <br>
       <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
         Ingresar
       </button>
