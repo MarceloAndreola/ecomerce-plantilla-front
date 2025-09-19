@@ -1,44 +1,28 @@
 <template>
-  <div class="home">
-    <h1>Crear usuario</h1>
+  <div class="home p-6 max-w-md mx-auto mt-10">
+    <h1 class="text-2xl font-bold mb-6 text-center">Crear usuario</h1>
+
     <input 
       type="text"
       v-model="name"
       placeholder="Nombre"
+      class="border rounded w-full px-3 py-2 mb-4"
     >
-    <br><br>
     <input 
-      type="file" 
-      @change="handleFile" 
-      ref="fileInput"
-    />    
-    <br><br>
-    <button @click="createUser">Enviar</button>
-    
-    <h3>Usuarios creados:</h3>
-    <div 
-    v-if="users.length" 
-    style="
-    display: 
-    flex; flex-wrap: 
-    wrap; justify-content: 
-    space-around;
-    "
+      type="password"
+      v-model="password"
+      placeholder="Contraseña"
+      class="border rounded w-full px-3 py-2 mb-4"
     >
-      <div 
-        v-for="(user, index) in users" 
-        :key="index" 
-        class="card"
+    
+    <button @click="createUser" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mb-6">
+      Crear Usuario
+    </button>
 
-      >
-        <p>Nombre: {{ user.name }}</p>
-        <img 
-          :src="`https://ecomerce-plantilla-back-1.onrender.com/uploads/${user.image_path}`" 
-          alt="Imagen usuario" 
-          style="max-width: 200px;" 
-        />
-      </div>
-    </div>
+    <h3 class="text-xl mb-4">Usuarios creados:</h3>
+    <ul>
+      <li v-for="user in users" :key="user.id">{{ user.name }}</li>
+    </ul>
   </div>
 </template>
 
@@ -47,59 +31,60 @@ export default {
   data() {
     return {
       name: '',
-      file: null,
+      password: '',
       users: []
     }
   },
   methods: {
-    handleFile(event) {
-      this.file = event.target.files[0];
-    },
     async fetchUsers() {
       try {
-        const response = await fetch('https://ecomerce-plantilla-back-1.onrender.com/user/lista_usuarios');
+        const token = localStorage.getItem("access_token");
+        const response = await fetch('https://ecomerce-plantilla-back-1.onrender.com/user/lista_usuarios', {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
         if (!response.ok) throw new Error(`Error: ${response.status}`);
         const data = await response.json();
-        this.users = data; // Asignar todos los usuarios recibidos
+        this.users = data;
       } catch (error) {
         console.error('Error al cargar usuarios:', error);
       }
     },
     async createUser() {
-      if (!this.name || !this.file) {
-        alert('Por favor ingresa un nombre y selecciona una imagen');
+      if (!this.name || !this.password) {
+        alert('Por favor ingresa nombre y contraseña');
         return;
       }
 
       const formData = new FormData();
       formData.append('name', this.name);
-      formData.append('image', this.file);
+      formData.append('password', this.password);
 
       try {
+        const token = localStorage.getItem("access_token");
         const response = await fetch('https://ecomerce-plantilla-back-1.onrender.com/user/create-users', {
           method: 'POST',
+          headers: {
+            "Authorization": `Bearer ${token}`  // ✅ token JWT
+          },
           body: formData
         });
 
         if (!response.ok) throw new Error(`Error: ${response.status}`);
-
         const newUser = await response.json();
-
-        // Actualizo el array con el nuevo usuario
         this.users.push(newUser);
 
-        // Resetear valores
         this.name = '';
-        this.file = null;
-        this.$refs.fileInput.value = '';
-
+        this.password = '';
       } catch (error) {
         console.error(error);
       }
     }
   },
   mounted() {
-    this.fetchUsers(); // Cargo los usuarios al iniciar el componente
+    this.fetchUsers();
   }
 }
 </script>
