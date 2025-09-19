@@ -8,7 +8,7 @@
       placeholder="Nombre"
       class="border rounded w-full px-3 py-2 mb-4"
     >
-    <br>
+    <br><br>
     <input 
       type="password"
       v-model="password"
@@ -22,7 +22,7 @@
     <br><br>
     <h3 class="text-xl mb-4">Usuarios creados:</h3>
     <ul>
-      <li v-for="user in users" :key="user.id">{{ user.name }}</li>
+      <li v-for="user in users" :key="user.id" style="list-style-type: none;">{{ user.name }}</li>
     </ul>
   </div>
 </template>
