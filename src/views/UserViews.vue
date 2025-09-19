@@ -19,8 +19,7 @@
     <button @click="createUser" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mb-6">
       Crear Usuario
     </button>
-    <br>
-    <br>
+    <br><br>
     <h3 class="text-xl mb-4">Usuarios creados:</h3>
     <ul>
       <li v-for="user in users" :key="user.id">{{ user.name }}</li>
@@ -42,14 +41,10 @@ export default {
       try {
         const token = localStorage.getItem("access_token");
         const response = await fetch('https://ecomerce-plantilla-back-1.onrender.com/user/lista_usuarios', {
-          headers: {
-            "Authorization": `Bearer ${token}`
-          }
+          headers: { "Authorization": `Bearer ${token}` }
         });
-
         if (!response.ok) throw new Error(`Error: ${response.status}`);
-        const data = await response.json();
-        this.users = data;
+        this.users = await response.json();
       } catch (error) {
         console.error('Error al cargar usuarios:', error);
       }
@@ -66,7 +61,7 @@ export default {
           method: 'POST',
           headers: {
             "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json" // ✅ importante
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
             name: this.name,
@@ -74,17 +69,18 @@ export default {
           })
         });
 
-        if (!response.ok) throw new Error(`Error: ${response.status}`);
-        const newUser = await response.json();
-        this.users.push(newUser);
+        const data = await response.json();
 
-        alert(`Usuario ${newUser.name} creado correctamente`);
+        if (!response.ok) throw new Error(data.error || `Error: ${response.status}`);
+
+        this.users.push({ id: data.id, name: data.name });
+        alert(data.message); // 🔹 muestra confirmación del backend
 
         this.name = '';
         this.password = '';
       } catch (error) {
         console.error(error);
-        alert('Error al crear el usuario');
+        alert(error.message || 'Error al crear el usuario');
       }
     }
   },
