@@ -47,7 +47,7 @@ export default {
 
         const data = await response.json();
         localStorage.setItem("access_token", data.access_token);
-        this.$router.push("/admin/users"); // redirige a UserViews
+        this.$router.push("/admin/productos/users"); // redirige a UserViews
       } catch (error) {
         alert(error.message);
       }
