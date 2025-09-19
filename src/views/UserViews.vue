@@ -1,6 +1,6 @@
 <template>
   <div class="home p-6 max-w-md mx-auto mt-10">
-    <h1 class="text-2xl font-bold mb-6 text-center">Crear usuario de prueba</h1>
+    <h1 class="text-2xl font-bold mb-6 text-center">Crear usuario</h1>
 
     <input 
       type="text"
