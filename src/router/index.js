@@ -15,6 +15,7 @@ import ConfirmPayViews from '@/views/ConfirmPayViews.vue'
 import HistorialPayViews from '@/views/HistorialPayViews.vue'
 import SeguimientoViews from '@/views/SeguimientoViews.vue'
 import CategoriasViews from '@/views/CategoriasViews.vue'
+import CheckoutMP from '@/views/CheckoutMP.vue'
 
 
 const routes = [
@@ -52,7 +53,8 @@ const routes = [
     component: CheckoutLayout,
     children: [
       { path: '', name: 'Checkout', component: CheckoutViews },
-      { path: 'pay', name: 'CheckPay', component: CheckPayViews  }
+      { path: 'pay', name: 'CheckPay', component: CheckPayViews  },
+      { path: 'mp', name: 'MP', component: CheckoutMP  }
     ]
   }
 ]

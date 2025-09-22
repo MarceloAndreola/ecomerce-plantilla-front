@@ -7,7 +7,8 @@
       </li>
     </ul>
     <p>Total a pagar: ${{ total }}</p>
-    <button @click="pagar">Pagar</button>
+    <button @click="transferencia">Tranferencia</button>
+    <button @click="mercadoPago">Mercado Pago</button>
   </div>
 </template>
 
@@ -19,12 +20,17 @@ export default {
   setup() {
     const router = useRouter()
 
-    const pagar = () => {
+    const transferencia = () => {
       // No vaciamos el carrito todavía
       router.push('/checkout/pay')
     }
 
-    return { carrito, total: totalCompra, pagar }
+    const mercadoPago = () => {
+      // No vaciamos el carrito todavía
+      router.push('/checkout/mp')
+    }
+
+    return { carrito, total: totalCompra, transferencia, mercadoPago }
   }
 }
 </script>
