@@ -1,6 +1,6 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <h1>Total de la compra</h1>
+    <h1>Total de la compra de prueba</h1>
     <ul style="list-style-type: none;">
       <li v-for="item in carrito.items" :key="item.id">
         {{ item.name_prod }} x {{ item.cantidad }} = ${{ item.precio * item.cantidad }}
