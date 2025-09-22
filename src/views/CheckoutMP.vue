@@ -18,19 +18,19 @@
 
 <script>
 import { carrito, totalCompra } from '@/cart.js'
+import { onMounted } from 'vue'
 
 export default {
   setup() {
     const total = totalCompra
 
-    const loadMPCheckout = async () => {
+    onMounted(async () => {
       try {
         // Creamos la preferencia en backend
         const res = await fetch("https://ecomerce-plantilla-back-1.onrender.com/payment/create_preference", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            title: "Compra ecommerce",
             items: carrito.items.map(i => ({
               title: i.name_prod,
               quantity: i.cantidad,
@@ -42,10 +42,10 @@ export default {
 
         const data = await res.json()
 
-        // Instanciamos Mercado Pago usando la Public Key
+        // Instanciamos Mercado Pago
         const mp = new window.MercadoPago(import.meta.env.VUE_APP_MP_PUBLIC_KEY)
 
-        // Renderizamos el checkout
+        // Renderizamos el checkout en el div ya montado
         mp.checkout({
           preference: { id: data.id },
           render: {
@@ -56,9 +56,7 @@ export default {
       } catch (err) {
         console.error("Error al crear preferencia de Mercado Pago:", err)
       }
-    }
-
-    loadMPCheckout()
+    })
 
     return { carrito, total }
   }
