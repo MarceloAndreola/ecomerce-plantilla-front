@@ -119,8 +119,8 @@ export default {
     }
 
     const finalizarCompra = () => {
-    mostrar.value = false          // opcional: cerrar carrito
-    router.push('/checkout')       // redirige a la página de checkout
+    mostrar.value = false
+    router.push('/checkout')
   }
 
     return { carrito, mostrar, sumar, restar, total, finalizarCompra }

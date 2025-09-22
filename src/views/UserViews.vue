@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import AuthService from '@services/authService';
+
 export default {
   data() {
     return {
@@ -39,10 +41,10 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const token = localStorage.getItem("access_token");
-        const response = await fetch('https://ecomerce-plantilla-back-1.onrender.com/user/lista_usuarios', {
-          headers: { "Authorization": `Bearer ${token}` }
-        });
+        const authService = new AuthService();
+        const response = await authService.makeAuthenticatedRequest(
+          'https://ecomerce-plantilla-back-1.onrender.com/user/lista_usuarios'
+        );
         if (!response.ok) throw new Error(`Error: ${response.status}`);
         this.users = await response.json();
       } catch (error) {
@@ -56,25 +58,26 @@ export default {
       }
 
       try {
-        const token = localStorage.getItem("access_token");
-        const response = await fetch('https://ecomerce-plantilla-back-1.onrender.com/user/create-users', {
-          method: 'POST',
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            name: this.name,
-            password: this.password
-          })
-        });
+        const authService = new AuthService();
+        const response = await authService.makeAuthenticatedRequest(
+          'https://ecomerce-plantilla-back-1.onrender.com/user/create-users',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              name: this.name,
+              password: this.password
+            })
+          }
+        );
 
         const data = await response.json();
-
         if (!response.ok) throw new Error(data.error || `Error: ${response.status}`);
 
         this.users.push({ id: data.id, name: data.name });
-        alert(data.message); // 🔹 muestra confirmación del backend
+        alert(`Usuario ${data.name} creado correctamente`);
 
         this.name = '';
         this.password = '';
