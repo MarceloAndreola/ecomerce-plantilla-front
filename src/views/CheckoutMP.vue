@@ -14,7 +14,6 @@ export default {
   setup() {
     const total = totalCompra
 
-    // Función para cargar el checkout de Mercado Pago
     const loadMPCheckout = async () => {
       // Creamos la preferencia en backend
       const res = await fetch("http://localhost:5000/payment/create_preference", {
@@ -26,23 +25,18 @@ export default {
           unit_price: total.value
         })
       })
-
       const data = await res.json()
 
-      // Inicializamos Mercado Pago
-      const script = document.createElement("script")
-      script.src = "https://sdk.mercadopago.com/js/v2"
-      script.onload = () => {
-        const mp = new window.MercadoPago(import.meta.env.VUE_APP_MP_PUBLIC_KEY)
-        mp.checkout({
-          preference: { id: data.id },
-          render: {
-            container: "#mp-checkout-button",
-            label: "Pagar con Mercado Pago",
-          },
-        })
-      }
-      document.body.appendChild(script)
+      // Instanciamos Mercado Pago con la Public Key de .env
+      const mp = new window.MercadoPago("TU_PUBLIC_KEY_DE_PRUEBA") // probar con la key directamente
+
+      mp.checkout({
+        preference: { id: data.id },
+        render: {
+          container: "#mp-checkout-button",
+          label: "Pagar con Mercado Pago",
+        },
+      })
     }
 
     loadMPCheckout()
