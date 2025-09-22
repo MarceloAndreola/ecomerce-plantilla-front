@@ -33,7 +33,7 @@
       <div
         style="position: fixed; right:20px; top:70px; background:white; border:1px solid #ddd; border-radius:10px; padding:15px; width:250px; box-shadow:0 4px 10px rgba(0,0,0,0.2); z-index:20;"
       >
-        <h3 style="margin-bottom:10px;">Carrito</h3>
+        <h3 style="margin-bottom:10px;">Carrito de prueba</h3>
         <div v-if="carrito.items.length === 0">Vacío</div>
         <ul style="display: flex; flex-direction: column; align-items: start; list-style-type: none; padding: 0;">
           <li v-for="(item, index) in carrito.items" :key="item.id" style="margin-bottom:5px; display:flex; justify-content: space-between; align-items:center; width: 100%;">
