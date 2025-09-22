@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import AuthService from '@services/authService';
+import AuthService from '../services/authService';
 
 export default {
   data() {
