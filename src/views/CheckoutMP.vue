@@ -20,12 +20,14 @@
 import { carrito, totalCompra } from '@/cart.js'
 import { onMounted } from 'vue'
 
-
 export default {
   setup() {
     const total = totalCompra
 
     onMounted(async () => {
+      // <-- VERIFICAR VARIABLE DE ENTORNO
+      console.log("Clave pública de MP:", import.meta.env.VUE_APP_MP_PUBLIC_KEY)
+
       try {
         // Creamos la preferencia en backend
         const res = await fetch("https://ecomerce-plantilla-back-1.onrender.com/payment/create_preference", {
