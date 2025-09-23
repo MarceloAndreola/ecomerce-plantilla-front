@@ -42,6 +42,7 @@ export default {
             total: total.value
           })
         })
+        
 
         const data = await res.json()
 
