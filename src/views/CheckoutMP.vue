@@ -20,6 +20,7 @@
 import { carrito, totalCompra } from '@/cart.js'
 import { onMounted } from 'vue'
 
+
 export default {
   setup() {
     const total = totalCompra
