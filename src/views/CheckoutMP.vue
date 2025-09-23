@@ -25,9 +25,8 @@ export default {
     const total = totalCompra
 
     onMounted(async () => {
-      // <-- VERIFICAR VARIABLE DE ENTORNO
-      console.log("Clave pública de MP:", import.meta.env.VUE_APP_MP_PUBLIC_KEY)
-
+      const mp = new window.MercadoPago(process.env.VUE_APP_MP_PUBLIC_KEY)
+      console.log("Clave pública de MP:", process.env.VUE_APP_MP_PUBLIC_KEY)
       try {
         // Creamos la preferencia en backend
         const res = await fetch("https://ecomerce-plantilla-back-1.onrender.com/payment/create_preference", {
@@ -42,7 +41,7 @@ export default {
             total: total.value
           })
         })
-        
+
 
         const data = await res.json()
 
