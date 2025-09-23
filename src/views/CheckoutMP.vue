@@ -25,8 +25,14 @@ export default {
     const total = totalCompra
 
     onMounted(async () => {
-      const mp = new window.MercadoPago(process.env.VUE_APP_MP_PUBLIC_KEY)
-      console.log("Clave pública de MP:", process.env.VUE_APP_MP_PUBLIC_KEY)
+      const MP_PUBLIC_KEY = process.env.VUE_APP_MP_PUBLIC_KEY
+      console.log("Clave pública de MP:", MP_PUBLIC_KEY)
+
+      if (!MP_PUBLIC_KEY) {
+        console.error("No se encontró la clave pública de Mercado Pago")
+        return
+      }
+
       try {
         // Creamos la preferencia en backend
         const res = await fetch("https://ecomerce-plantilla-back-1.onrender.com/payment/create_preference", {
@@ -42,11 +48,10 @@ export default {
           })
         })
 
-
         const data = await res.json()
 
         // Instanciamos Mercado Pago
-        const mp = new window.MercadoPago(import.meta.env.VUE_APP_MP_PUBLIC_KEY)
+        const mp = new window.MercadoPago(MP_PUBLIC_KEY)
 
         // Renderizamos el checkout en el div ya montado
         mp.checkout({
