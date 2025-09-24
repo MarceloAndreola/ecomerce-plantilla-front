@@ -4,41 +4,31 @@
 
     <!-- Listado del carrito -->
     <ul style="list-style: none; padding: 0; width: 300px;">
-      <li
-        v-for="item in carrito.items"
-        :key="item.id"
-        style="display: flex; justify-content: space-between; margin-bottom: 5px;"
-      >
+      <li v-for="item in carrito.items" :key="item.id" style="display: flex; justify-content: space-between; margin-bottom: 5px;">
         {{ item.name_prod }} x {{ item.cantidad }} = ${{ item.precio * item.cantidad }}
       </li>
     </ul>
 
     <p><strong>Total a pagar: ${{ total }}</strong></p>
 
-    <!-- Botón de Mercado Pago -->
-    <div id="mp-checkout-button"></div>
+    <!-- Botón de redirección -->
+    <button @click="pagar" style="padding: 10px 20px; background: #009EE3; color: white; border: none; border-radius: 5px; cursor: pointer;">
+      Pagar con Mercado Pago
+    </button>
   </div>
 </template>
 
 <script>
 import { carrito, totalCompra } from '@/cart.js'
-import { onMounted } from 'vue'
+import { ref } from 'vue'
 
 export default {
   setup() {
     const total = totalCompra
 
-    onMounted(async () => {
-      const MP_PUBLIC_KEY = process.env.VUE_APP_MP_PUBLIC_KEY
-      console.log("Clave pública de MP:", MP_PUBLIC_KEY)
-
-      if (!MP_PUBLIC_KEY) {
-        console.error("No se encontró la clave pública de Mercado Pago")
-        return
-      }
-
+    const pagar = async () => {
       try {
-        // Creamos la preferencia en backend
+        // Crear preferencia en el backend
         const res = await fetch("https://ecomerce-plantilla-back-1.onrender.com/payment/create_preference", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -47,30 +37,26 @@ export default {
               title: i.name_prod,
               quantity: i.cantidad,
               unit_price: i.precio
-            }))
+            })),
+            total: total.value
           })
         })
 
         const data = await res.json()
         console.log("Preferencia creada:", data)
 
-        // Instanciamos Mercado Pago
-        const mp = new window.MercadoPago(MP_PUBLIC_KEY)
-
-        // Renderizamos el checkout
-        mp.checkout({
-          preference: { id: data.id },
-          render: {
-            container: "#mp-checkout-button",
-            label: "Pagar con Mercado Pago",
-          },
-        })
+        // Redirigir a la página de pago
+        if (data.init_point) {
+          window.location.href = data.init_point
+        } else {
+          console.error("No se encontró init_point en la respuesta:", data)
+        }
       } catch (err) {
         console.error("Error al crear preferencia de Mercado Pago:", err)
       }
-    })
+    }
 
-    return { carrito, total }
+    return { carrito, total, pagar }
   }
 }
 </script>
