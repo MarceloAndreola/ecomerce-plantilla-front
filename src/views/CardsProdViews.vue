@@ -84,8 +84,8 @@ export default {
       file: null,
       categorias: [],
       categoria_id: '',
-      productos: [],             // Lista de productos por categoría
-      selectedCategory: ''       // Categoría seleccionada para mostrar productos
+      productos: [],
+      selectedCategory: ''
     }
   },
   async created() {

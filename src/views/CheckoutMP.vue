@@ -49,10 +49,10 @@ export default {
         const data = await res.json()
         console.log("Preferencia creada:", data)
 
-        if (data.init_point) {
-          window.location.href = data.init_point
+        if (data.sandbox_url) {
+          window.location.href = data.sandbox_url
         } else {
-          console.error("No se encontró init_point en la respuesta:", data)
+          console.error("No se encontró sandbox_url en la respuesta:", data)
         }
       } catch (err) {
         console.error("Error al crear preferencia de Mercado Pago:", err)
