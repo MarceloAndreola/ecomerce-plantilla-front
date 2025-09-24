@@ -4,7 +4,11 @@
 
     <!-- Listado del carrito -->
     <ul style="list-style: none; padding: 0; width: 300px;">
-      <li v-for="item in carrito.items" :key="item.id" style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+      <li
+        v-for="item in carrito.items"
+        :key="item.id"
+        style="display: flex; justify-content: space-between; margin-bottom: 5px;"
+      >
         {{ item.name_prod }} x {{ item.cantidad }} = ${{ item.precio * item.cantidad }}
       </li>
     </ul>
@@ -43,17 +47,17 @@ export default {
               title: i.name_prod,
               quantity: i.cantidad,
               unit_price: i.precio
-            })),
-            total: total.value
+            }))
           })
         })
 
         const data = await res.json()
+        console.log("Preferencia creada:", data)
 
         // Instanciamos Mercado Pago
         const mp = new window.MercadoPago(MP_PUBLIC_KEY)
 
-        // Renderizamos el checkout en el div ya montado
+        // Renderizamos el checkout
         mp.checkout({
           preference: { id: data.id },
           render: {

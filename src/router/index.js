@@ -16,6 +16,9 @@ import HistorialPayViews from '@/views/HistorialPayViews.vue'
 import SeguimientoViews from '@/views/SeguimientoViews.vue'
 import CategoriasViews from '@/views/CategoriasViews.vue'
 import CheckoutMP from '@/views/CheckoutMP.vue'
+import Success from '@/views/Success.vue'
+import Failure from '@/views/Failure.vue'
+import Pending from '@/views/Pending.vue'
 
 
 const routes = [
@@ -56,7 +59,10 @@ const routes = [
       { path: 'pay', name: 'CheckPay', component: CheckPayViews  },
       { path: 'mp', name: 'MP', component: CheckoutMP  }
     ]
-  }
+  },
+  { path: '/success', name: 'Success', component: Success },
+  { path: '/failure', name: 'Failure', component: Failure },
+  { path: '/pending', name: 'Pending', component: Pending }
 ]
 
 const router = createRouter({
