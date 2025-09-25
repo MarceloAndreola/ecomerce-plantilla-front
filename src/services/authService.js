@@ -1,58 +1,92 @@
-// Ejemplo de uso desde el frontend
-
 class AuthService {
     constructor() {
         this.accessToken = localStorage.getItem('access_token');
         this.refreshToken = localStorage.getItem('refresh_token');
+        this.baseUrl = 'https://ecomerce-plantilla-back-1.onrender.com';
     }
 
+    // Hacer requests autenticadas
+    async makeAuthenticatedRequest(url, options = {}) {
+        // Asegurarse de usar la URL completa
+        const fullUrl = url.startsWith('http') ? url : this.baseUrl + url;
 
-async makeAuthenticatedRequest(url, options = {}) {
-    //Intentar peticion con token actual
-    let response = await fetch(url, {
-        ...options,
-        headers: {
+        // Headers existentes + Authorization
+        let headers = {
             ...options.headers,
             'Authorization': `Bearer ${this.accessToken}`
+        };
+
+        let response = await fetch(fullUrl, { ...options, headers });
+
+        // Si el token expiró, intentar refresh
+        if (response.status === 401) {
+            const refreshed = await this.refreshAccessToken();
+            if (refreshed) {
+                headers['Authorization'] = `Bearer ${this.accessToken}`;
+                response = await fetch(fullUrl, { ...options, headers });
+            }
         }
-    });
 
-    //Si el token expiro, intentar renovarlo
-    if (response.status === 401) {
-        const refreshed = await this.refreshAccessToken();
+        return response;
+    }
 
-        if (refreshed) {
-            // Reintentar peticion con un nuevo token
-            response = await fetch(url, {
-                ...options,
+    // Renovar token
+    async refreshAccessToken() {
+        if (!this.refreshToken) return false;
+
+        try {
+            const response = await fetch(`${this.baseUrl}/admin_auth/refresh`, {
+                method: 'POST',
                 headers: {
-                    ...options.headers,
-                    'Authorization' : `Bearer ${this.accessToken}`
+                    'Authorization': `Bearer ${this.refreshToken}`
                 }
             });
-        }
-    }
-    return response;
-}
 
-async refreshAccessToken() {
-    try {
-        const response = await fetch('/refresh', {
-            method: 'POST',
-            headers: {
-                'Authorization' : `Bearer ${this.refreshToken}`
+            if (response.ok) {
+                const data = await response.json();
+                this.accessToken = data.access_token; // ⚠️ coincidir con el nombre devuelto por tu backend
+                localStorage.setItem('access_token', this.accessToken);
+                return true;
             }
-        });
-        if (response.ok) {
-            const data = await response.json();
-            this.accessToken = data.accessToken;
-            localStorage.setItem('access_token', this.accessToken);
-            return true;
+        } catch (err) {
+            console.error('Error renovando token:', err);
         }
-    } catch (error) {
-        console.error('Error renovando token:', error);
+        return false;
     }
-    return false;
+
+    // Login
+    async login(name_admin, password) {
+        const response = await fetch(`${this.baseUrl}/admin_auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name_admin, password })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            this.accessToken = data.access_token;
+            this.refreshToken = data.refresh_token;
+            localStorage.setItem('access_token', this.accessToken);
+            localStorage.setItem('refresh_token', this.refreshToken);
+            return data;
+        } else {
+            throw new Error(data.error || 'Error en login');
+        }
+    }
+
+    // Logout
+    async logout() {
+        try {
+            await this.makeAuthenticatedRequest(`${this.baseUrl}/admin_auth/logout`, { method: 'POST' });
+        } catch (err) {
+            console.error(err);
+        } finally {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            this.accessToken = null;
+            this.refreshToken = null;
+        }
+    }
 }
 
-}
+export default AuthService;

@@ -8,18 +8,17 @@
       placeholder="Nombre"
       class="border rounded w-full px-3 py-2 mb-4"
     >
-    <br><br>
     <input 
       type="password"
       v-model="password"
       placeholder="Contraseña"
       class="border rounded w-full px-3 py-2 mb-4"
     >
-    <br><br>
+
     <button @click="createUser" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mb-6">
       Crear Usuario
     </button>
-    <br><br>
+
     <h3 class="text-xl mb-4">Usuarios creados:</h3>
     <ul>
       <li v-for="user in users" :key="user.id" style="list-style-type: none;">{{ user.name }}</li>
@@ -29,6 +28,8 @@
 
 <script>
 import AuthService from '../services/authService';
+
+const authService = new AuthService(); // instancia única
 
 export default {
   data() {
@@ -41,7 +42,6 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const authService = new AuthService();
         const response = await authService.makeAuthenticatedRequest(
           'https://ecomerce-plantilla-back-1.onrender.com/user/lista_usuarios'
         );
@@ -51,6 +51,7 @@ export default {
         console.error('Error al cargar usuarios:', error);
       }
     },
+
     async createUser() {
       if (!this.name || !this.password) {
         alert('Por favor ingresa nombre y contraseña');
@@ -58,18 +59,12 @@ export default {
       }
 
       try {
-        const authService = new AuthService();
         const response = await authService.makeAuthenticatedRequest(
           'https://ecomerce-plantilla-back-1.onrender.com/user/create-users',
           {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              name: this.name,
-              password: this.password
-            })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: this.name, password: this.password })
           }
         );
 
