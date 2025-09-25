@@ -77,6 +77,9 @@
 </template>
 
 <script>
+import AuthService from '@/services/authService'
+const authService = new AuthService();
+
 export default {
   data() {
     return {
@@ -138,7 +141,7 @@ export default {
     }
 
     try {
-        const response = await fetch(`https://ecomerce-plantilla-back-1.onrender.com/productos/modificar_prod/${this.productoId}`, {
+        const response = await authService.makeAuthenticatedRequest(`https://ecomerce-plantilla-back-1.onrender.com/productos/modificar_prod/${this.productoId}`, {
         method: 'PUT',
         body: formData
         });
