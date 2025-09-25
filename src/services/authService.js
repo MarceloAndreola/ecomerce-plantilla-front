@@ -5,20 +5,20 @@ class AuthService {
         this.baseUrl = 'https://ecomerce-plantilla-back-1.onrender.com';
     }
 
-    // Hacer requests autenticadas
     async makeAuthenticatedRequest(url, options = {}) {
-        // Asegurarse de usar la URL completa
         const fullUrl = url.startsWith('http') ? url : this.baseUrl + url;
 
-        // Headers existentes + Authorization
-        let headers = {
-            ...options.headers,
-            'Authorization': `Bearer ${this.accessToken}`
-        };
+        let headers = options.headers || {};
+        
+        // ⚡ Solo agregar Content-Type si NO es FormData
+        if (!(options.body instanceof FormData)) {
+            headers['Content-Type'] = 'application/json';
+        }
+
+        headers['Authorization'] = `Bearer ${this.accessToken}`;
 
         let response = await fetch(fullUrl, { ...options, headers });
 
-        // Si el token expiró, intentar refresh
         if (response.status === 401) {
             const refreshed = await this.refreshAccessToken();
             if (refreshed) {
