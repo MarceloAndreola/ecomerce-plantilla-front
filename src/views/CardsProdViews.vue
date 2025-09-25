@@ -75,7 +75,7 @@
 
 <script>
 import AuthService from '../services/authService';
-const AuthService = new AuthService();
+const authService = new AuthService();
 
 export default {
   data() {
