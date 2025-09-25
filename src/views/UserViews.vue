@@ -8,6 +8,7 @@
       placeholder="Nombre"
       class="border rounded w-full px-3 py-2 mb-4"
     >
+    
     <input 
       type="password"
       v-model="password"

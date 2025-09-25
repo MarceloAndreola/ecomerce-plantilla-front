@@ -74,6 +74,9 @@
 </template>
 
 <script>
+import AuthService from '../services/authService';
+const AuthService = new AuthService();
+
 export default {
   data() {
     return {
@@ -112,34 +115,39 @@ export default {
       formData.append('image', this.file);
 
       try {
-        const response = await fetch('https://ecomerce-plantilla-back-1.onrender.com/productos/create_prod', {
-          method: 'POST',
-          body: formData
-        });
+        const response = await authService.makeAuthenticatedRequest(
+          'https://ecomerce-plantilla-back-1.onrender.com/productos/create_prod',
+          {
+            method: 'POST',
+            body: formData
+          }
+        );
 
-        if (!response.ok) throw new Error(`Error: ${response.status}`);
+        if (!response.ok) {
+          const errData = await response.json();
+          throw new Error(errData.error || `Error: ${response.status}`);
+        }
 
-        alert('Producto subido correctamente de prueba');
+        alert('Producto subido correctamente');
 
-        // Resetear valores del formulario
+        // Reset formulario
         this.name_prod = '';
         this.descripcion = '';
         this.precio = '';
         this.stock = 0;
-        this.categoria_id = ''
+        this.categoria_id = '';
         this.file = null;
         this.$refs.fileInput.value = '';
 
-        // Actualizo listado si está viendo productos de la misma categoría
-        if(this.selectedCategory === this.categoria_id) {
-          this.fetchProductsByCategory()
+        if (this.selectedCategory === this.categoria_id) {
+          this.fetchProductsByCategory();
         }
 
       } catch (error) {
         console.error('Error al subir el producto:', error);
+        alert(error.message || 'Error al subir el producto');
       }
     },
-
     // Trae productos por categoría usando el endpoint que devuelve URLs de Cloudinary
     async fetchProductsByCategory() {
       if (!this.selectedCategory) {
