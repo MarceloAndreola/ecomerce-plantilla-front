@@ -124,34 +124,51 @@ export default {
     },
 
     async modificarProd() {
-    if (!this.productoId) {
-        alert('Primero seleccione un producto');
-        return;
-    }
+        if (!this.productoId) {
+            alert('Primero seleccione un producto');
+            return;
+        }
 
-    const formData = new FormData();
-    formData.append('name_prod', this.name_prod);
-    formData.append('descripcion', this.descripcion);
-    formData.append('precio', this.precio);
-    formData.append('stock', this.stock);
-    formData.append('categoria_id', this.categoria_id);
-
-    if (this.file) {
-        formData.append('image', this.file);  // solo si subieron una nueva imagen
-    }
-
-    try {
-        const response = await authService.makeAuthenticatedRequest(`https://ecomerce-plantilla-back-1.onrender.com/productos/modificar_prod/${this.productoId}`, {
-        method: 'PUT',
-        body: formData
+        console.log('Enviando modificación', {
+            name_prod: this.name_prod,
+            descripcion: this.descripcion,
+            precio: this.precio,
+            stock: this.stock,
+            categoria_id: this.categoria_id,
+            file: this.file
         });
 
-        if (!response.ok) throw new Error(`Error: ${response.status}`);
+        const formData = new FormData();
+        formData.append('name_prod', this.name_prod);
+        formData.append('descripcion', this.descripcion);
+        formData.append('precio', this.precio);
+        formData.append('stock', this.stock);
+        formData.append('categoria_id', this.categoria_id);
 
-        alert('Producto modificado correctamente');
-    } catch (error) {
-        console.error('Error al modificar producto:', error);
-    }
+        if (this.file) {
+            formData.append('image', this.file);
+        }
+
+        try {
+            const response = await authService.makeAuthenticatedRequest(
+                `https://ecomerce-plantilla-back-1.onrender.com/productos/modificar_prod/${this.productoId}`, 
+                {
+                    method: 'PUT',
+                    body: formData
+                }
+            );
+
+            console.log('Response', response);
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(`Error: ${response.status} - ${text}`);
+            }
+
+            alert('Producto modificado correctamente');
+        } catch (error) {
+            console.error('Error al modificar producto:', error);
+            alert('Error al modificar producto: ' + error.message);
+        }
     }
 
   }
