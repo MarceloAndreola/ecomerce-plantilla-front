@@ -48,6 +48,9 @@
 
 </template>
 <script>
+import AuthService from '@/services/authService';
+const authService = new AuthService();
+
 export default {
     data() {
         return {
@@ -67,7 +70,7 @@ export default {
             }
             this.loading = true;
             try {
-                const response = await fetch('https://ecomerce-plantilla-back-1.onrender.com/productos/create_categoria', {
+                const response = await authService.makeAuthenticatedRequest('https://ecomerce-plantilla-back-1.onrender.com/productos/create_categoria', {
                     method: 'POST',
                     headers: { 'Content-Type' : 'application/json' },
                     body: JSON.stringify({ name_cat: this.name_cat })
