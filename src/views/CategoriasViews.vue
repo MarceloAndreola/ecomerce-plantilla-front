@@ -61,18 +61,18 @@ export default {
   methods: {
     // Crear categoría
     async createCat() {
-      if (!this.name_cat) {
+    if (!this.name_cat) {
         alert('Complete el formulario');
         return;
-      }
-      this.loading = true;
-      try {
+    }
+    this.loading = true;
+    try {
         const response = await authService.makeAuthenticatedRequest(
-          '/productos/create_categoria',
-          {
+        '/productos/create_categoria',   // 👈 dejá que authService arme la URL
+        {
             method: 'POST',
-            body: JSON.stringify({ name_cat: this.name_cat })
-          }
+            body: JSON.stringify({ name_cat: this.name_cat }) // 👈 solo body
+        }
         );
 
         const text = await response.text();
@@ -83,13 +83,14 @@ export default {
 
         alert('Categoria subida correctamente');
         this.name_cat = '';
-      } catch (error) {
+    } catch (error) {
         console.error('Error al subir la categoria: ', error);
         alert(error.message || 'Ocurrió un error al subir la categoría');
-      } finally {
+    } finally {
         this.loading = false;
-      }
+    }
     },
+
 
     // Buscar categorías
     async buscarCategoria() {
