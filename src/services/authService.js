@@ -25,6 +25,7 @@ class AuthService {
         response = await fetch(fullUrl, { ...options, headers });
       }
     }
+    
 
     return response;
   }
